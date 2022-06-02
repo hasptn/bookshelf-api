@@ -50,36 +50,16 @@ const addBook = (request, h) => {
   return response
 }
 
-const getAllBooks = (request, h) => {
-  const { name, reading, finished } = request.query
-
-  let Books = books
-
-  if (name !== undefined) {
-    Books = Books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()))
+const getAllBooks = () => ({
+  status: 'success',
+  data: {
+    books: books.map((book) => ({
+      id: book.id,
+      name: book.name,
+      publisher: book.publisher
+    }))
   }
-
-  if (reading !== undefined) {
-    Books = Books.filter((book) => book.reading === !!Number(reading))
-  }
-
-  if (finished !== undefined) {
-    Books = Books.filter((book) => book.finished === !!Number(finished))
-  }
-
-  const response = h.response({
-    status: 'success',
-    data: {
-      books: Books.map((book) => ({
-        id: book.id,
-        name: book.name,
-        publisher: book.publisher
-      }))
-    }
-  })
-  response.code(200)
-  return response
-}
+})
 
 const getBooksById = (request, h) => {
   const { bookId } = request.params
